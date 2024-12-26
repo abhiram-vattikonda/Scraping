@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup as bs
-import re, json
+import re, json, time
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:65.0) Gecko/20100101 Firefox/65.0"
 
@@ -19,19 +19,63 @@ def get_name_and_links():
     for _ in data['itemListElement']:
         names.update({_['item']['name'] : _['item']['url']})
 
-    return names
+    with open('names_and_links.txt', 'w') as file:
+        for name in names:
+            file.write(f"{name} : {names[name]}\n")
+
 
 def get_directors(name_and_links):
+    directors = {}
     for i in name_and_links:
         headers = {"user-agent": USER_AGENT} # adding the user agent
         resp = requests.get(name_and_links[i], headers=headers)
         soup = bs(resp.content, "html.parser")
         data = json.loads(soup.find('script', attrs={'type': "application/ld+json"}).text)
+        for j in data['director']:
+            if j['@type'] == "Person":
+                if j['name'] in directors:
+                    directors[j['name']] += 1
+                else:
+                    directors[j['name']] = 1
+        print(i)
 
+    directors = sorted(directors.items(), key=lambda kv: (kv[0], kv[1]))
+    with open("directors.txt", 'w') as file:
+        for i in directors:
+            file.write(f"{i[0]} : {i[1]}\n")
 
 def main():
-    name_and_links = get_name_and_links()
-    directors = get_directors(name_and_links)
+    start_time = time.time()
+    try:
+        file = open("names_and_links.txt", 'r')
+    except FileNotFoundError:
+        get_name_and_links()
+        file = open("names_and_links.txt", 'r')
+
+
+
+    name_and_links = {}
+    for line in file:
+        name_and_links.update({line.split(' : ')[0] : line.split(' : ')[1][:-2]})
+    file.close()
+
+    try:
+        file = open("directors.txt", 'r')
+    except FileNotFoundError:
+        get_directors(name_and_links)
+        file = open("directors.txt", 'r')
+
+    directors = {}
+    for line in file:
+        directors.update({line.split(' : ')[0] : line.split(' : ')[1][:-2]})
+    file.close()
+
+    print(*[f"{i} : {directors[i]}\n" for i in directors])
+
+    print("--- %s seconds ---" % (time.time() - start_time))
+
+
+
 
 # Example usage
 if __name__ == "__main__":

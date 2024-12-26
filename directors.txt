@@ -1,0 +1,177 @@
+Aamir Khan : 1
+Adam Elliot : 1
+Adrian Molina : 1
+Alejandro G. Iñárritu : 1
+Amole Gupte : 1
+Asghar Farhadi : 1
+Bob Persichetti : 1
+Bob Peterson : 1
+Brian De Palma : 1
+Bryan Singer : 1
+Carl Theodor Dreyer : 1
+Carlos Martínez López : 1
+Carol Reed : 1
+Clyde Bruckman : 1
+Curtis Hanson : 1
+Damien Chazelle : 1
+Damián Szifron : 1
+Danny Boyle : 1
+Darren Aronofsky : 1
+David Lynch : 1
+David Silverman : 1
+David Yates : 1
+Dean DeBlois : 1
+Elem Klimov : 1
+Elia Kazan : 1
+Ernst Lubitsch : 1
+Fernando Meirelles : 1
+Florian Henckel von Donnersmarck : 1
+Florian Zeller : 1
+Gavin O&apos;Connor : 1
+Gene Kelly : 1
+George Cukor : 1
+George Lucas : 1
+George Miller : 1
+George Roy Hill : 1
+Gillo Pontecorvo : 1
+Giuseppe Tornatore : 1
+Gore Verbinski : 1
+Guillermo del Toro : 1
+Gus Van Sant : 1
+Harold Ramis : 1
+Haruo Sotozaki : 1
+Henri-Georges Clouzot : 1
+Irvin Kershner : 1
+Isao Takahata : 1
+James McTeigue : 1
+Jan Pinkava : 1
+Jean-Pierre Jeunet : 1
+Jim Sheridan : 1
+Joaquim Dos Santos : 1
+John Carpenter : 1
+John Ford : 1
+John G. Avildsen : 1
+John Huston : 1
+John Lasseter : 1
+John McTiernan : 1
+John Sturges : 1
+Jon Watts : 1
+Jonathan Demme : 1
+Joseph Kosinski : 1
+Joseph L. Mankiewicz : 1
+Juan José Campanella : 1
+Justin K. Thompson : 1
+Kemp Powers : 1
+King Vidor : 1
+Kátia Lund : 1
+Lana Wachowski : 1
+Lasse Hallström : 1
+Lenny Abrahamson : 1
+Lilly Wachowski : 1
+Luc Besson : 1
+M. Night Shyamalan : 1
+Majid Majidi : 1
+Makoto Shinkai : 1
+Martin McDonagh : 1
+Masaki Kobayashi : 1
+Mathieu Kassovitz : 1
+Michael Cimino : 1
+Michael Curtiz : 1
+Michael Mann : 1
+Michel Gondry : 1
+Nadine Labaki : 1
+Naoko Yamada : 1
+Nitesh Tiwari : 1
+Nithilan Saminathan : 1
+Oliver Hirschbiegel : 1
+Oliver Stone : 1
+Olivier Nakache : 1
+Orson Welles : 1
+Paul Thomas Anderson : 1
+Peter Farrelly : 1
+Peter Ramsey : 1
+Rajkumar Hirani : 1
+Richard Marquand : 1
+Rob Minkoff : 1
+Rob Reiner : 1
+Robert Bresson : 1
+Robert Mulligan : 1
+Robert Wise : 1
+Roberto Benigni : 1
+Rodney Rothman : 1
+Roger Allers : 1
+Ronnie Del Carmen : 1
+Sam Wood : 1
+Sean Penn : 1
+Sergio Pablos : 1
+Stanley Donen : 1
+Stanley Kramer : 1
+Steve McQueen : 1
+Stuart Rosenberg : 1
+T.J. Gnanavel : 1
+Taichi Ishidate : 1
+Tate Taylor : 1
+Terry George : 1
+Terry Gilliam : 1
+Terry Jones : 1
+Thomas Kail : 1
+Thomas Vinterberg : 1
+Todd Phillips : 1
+Tom McCarthy : 1
+Tony Kaye : 1
+Vidhu Vinod Chopra : 1
+Vittorio De Sica : 1
+Wes Anderson : 1
+William Friedkin : 1
+Wolfgang Petersen : 1
+Yasujirô Ozu : 1
+Çagan Irmak : 1
+Éric Toledano : 1
+Andrew Stanton : 2
+Anthony Russo : 2
+Bong Joon Ho : 2
+Buster Keaton : 2
+Chris Sanders : 2
+David Lean : 2
+Frank Capra : 2
+Frank Darabont : 2
+Fritz Lang : 2
+Guy Ritchie : 2
+Ingmar Bergman : 2
+James Mangold : 2
+Joe Russo : 2
+Mel Gibson : 2
+Milos Forman : 2
+Park Chan-wook : 2
+Peter Weir : 2
+Richard Linklater : 2
+Robert Zemeckis : 2
+Roman Polanski : 2
+Ron Howard : 2
+Sam Mendes : 2
+Sidney Lumet : 2
+Victor Fleming : 2
+William Wyler : 2
+Brad Bird : 3
+Clint Eastwood : 3
+David Fincher : 3
+Denis Villeneuve : 3
+Ethan Coen : 3
+Francis Ford Coppola : 3
+James Cameron : 3
+Joel Coen : 3
+Pete Docter : 3
+Peter Jackson : 3
+Ridley Scott : 3
+Hayao Miyazaki : 4
+Lee Unkrich : 4
+Sergio Leone : 4
+Billy Wilder : 5
+Charles Chaplin : 5
+Quentin Tarantino : 5
+Akira Kurosawa : 6
+Alfred Hitchcock : 6
+Martin Scorsese : 7
+Stanley Kubrick : 7
+Steven Spielberg : 7
+Christopher Nolan : 8
