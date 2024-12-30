@@ -36,10 +36,10 @@ def get_directors(name_and_links):
                 if j['name'] in directors:
                     directors[j['name']] += 1
                 else:
-                    directors[j['name']] = 1
+                    directors.update({j['name'] : 1})
         print(i)
 
-    directors = sorted(directors.items(), key=lambda kv: (kv[0], kv[1]))
+    directors = sorted(directors.items(), key=lambda kv: kv[1], reverse=True)
     with open("directors.txt", 'w') as file:
         for i in directors:
             file.write(f"{i[0]} : {i[1]}\n")
@@ -67,7 +67,8 @@ def main():
 
     directors = {}
     for line in file:
-        directors.update({line.split(' : ')[0] : line.split(' : ')[1][:-2]})
+        t = line.split(' : ')
+        directors.update({t[0] : t[1]})
     file.close()
 
     print(*[f"{i} : {directors[i]}\n" for i in directors])
