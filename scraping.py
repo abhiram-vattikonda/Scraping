@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import requests
 from bs4 import BeautifulSoup as bs
 import re, json, time
@@ -44,6 +45,19 @@ def get_directors(name_and_links):
         for i in directors:
             file.write(f"{i[0]} : {i[1]}\n")
 
+def gen_graph(directors : dict):
+    fig, ax = plt.subplots()
+    keys = {}
+    directors = dict(sorted(directors.items(), key=lambda kv: kv[1]))
+    for x in directors.values():
+        if x in keys:
+            keys[x] += 1
+        else:
+            keys.update({x : 1})
+    ax.bar(list(keys.keys()), list(keys.values()))
+
+    plt.show()
+
 def main():
     start_time = time.time()
     try:
@@ -72,6 +86,8 @@ def main():
     file.close()
 
     print(*[f"{i} : {directors[i]}\n" for i in directors])
+
+    gen_graph(directors)
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
