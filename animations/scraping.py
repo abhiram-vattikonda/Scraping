@@ -29,11 +29,10 @@ def main():
         for i in range(last_movie_index, len(displayed_movies)):
             el = wait.until(EC.visibility_of_element_located((By.XPATH, f"(//li[contains(@class, 'ipc-metadata-list-summary-item')])[{i+1}]")))
         
-            name = el.find_element(By.XPATH, './/h3').text.split()[1]
+            name = el.find_element(By.XPATH, './/h3').text.split(". ")[1]
             link = el.find_element(By.XPATH, ".//a").get_attribute("href")
-            movies.update({name : link})
-            print({name : link})
-            print("Collected:", name)
+            movies.update({link : name})
+            print("Collected:", name,len(movies))
 
         last_movie_index = len(movies)
         if last_movie_index != count:
@@ -45,15 +44,16 @@ def main():
             except TimeoutError:
                 pass
 
-        break
         iteration += 1
 
     print(last_movie_index)
 
     with open("animation.txt", "w") as file:
-        for movie in movies:
-            file.write(f"{movie} : {movies[movie]}\n")
+        for link in movies:
+            file.write(f"{movies[link]} : {link}\n")
     print("--- %s seconds ---" % (time.time() - start_time))
+
+    driver.quit()
     
 
 
