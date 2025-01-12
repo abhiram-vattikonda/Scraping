@@ -3,8 +3,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup as bs
-import time
+import time, requests, re
 
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:65.0) Gecko/20100101 Firefox/65.0"
 
 def getMovies(driver, count):
     movies = {}
@@ -57,10 +58,24 @@ def awards(driver : webdriver.Chrome, movies :dict):
             awards_summary = awards_info.find_element(By.XPATH, f".//span").text
             awards_lable = awards_info.find_element(By.XPATH, f".//a[contains(@aria-label, 'See more awards and nominations')]").text
             print(awards_lable, awards_summary)
-            if ("Won" in awards_lable):
+            if ("win" in awards_summary):
                 print(awards_lable, awards_summary, "*************")
         except TimeoutError:
             pass"""
+    
+    headers = {"user-agent": USER_AGENT}
+    for link in movies:
+        url_content = requests.get(link, headers=headers)
+        soup = bs(url_content.content, "html.parser")
+        try:
+            awards_lable = soup.find('a', attrs={'aria-label':'See more awards and nominations'}).text
+        except AttributeError:
+            pass
+
+        if "Won" in awards_lable:
+            print(movies[link])
+
+
 
 def main():
     start_time = time.time()
@@ -83,10 +98,10 @@ def main():
     except FileNotFoundError:
         getMovies(driver, count)
 
+    driver.quit()
     awards(driver, movies)
     print("--- %s seconds ---" % (time.time() - start_time))
 
-    driver.quit()
     
 
 
