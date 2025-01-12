@@ -6,14 +6,7 @@ from bs4 import BeautifulSoup as bs
 import time
 
 
-
-def main():
-    start_time = time.time()
-    driver = webdriver.Chrome()
-    driver.get("https://www.imdb.com/search/title/?title_type=feature&genres=animation&countries=US&languages=en")
-    driver.implicitly_wait(10)
-    count =  int(driver.find_element(by=By.CSS_SELECTOR, value=".sc-13add9d7-3.fwjHEn").text.split()[2].replace(",", ""))
-    
+def getMovies(driver, count):
     movies = {}
     last_movie_index = 0
     iteration = 0
@@ -51,6 +44,31 @@ def main():
     with open("animation.txt", "w") as file:
         for link in movies:
             file.write(f"{movies[link]} : {link}\n")
+    pass
+
+
+def main():
+    start_time = time.time()
+    driver = webdriver.Chrome()
+    driver.get("https://www.imdb.com/search/title/?title_type=feature&genres=animation&countries=US&languages=en")
+    driver.implicitly_wait(10)
+    count =  int(driver.find_element(by=By.CSS_SELECTOR, value=".sc-13add9d7-3.fwjHEn").text.split()[2].replace(",", ""))
+    
+
+    movies = {}
+    try:
+        with open("animation.txt",'r') as file:
+            for line in file:
+                movies.update({line.split(" : ")[1] : line.split(" : ")[0]})
+
+        if len(movies) != count:
+            getMovies(driver, count)
+            print("Tried again")
+
+    except FileNotFoundError:
+        getMovies(driver, count)
+
+    print(len(movies))
     print("--- %s seconds ---" % (time.time() - start_time))
 
     driver.quit()
