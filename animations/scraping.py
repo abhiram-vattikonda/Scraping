@@ -11,7 +11,6 @@ def getMovies(driver, count):
     last_movie_index = 0
     iteration = 0
     wait = WebDriverWait(driver, 10)
-    short_wait = WebDriverWait(driver, 5)
 
     while len(movies) != count:
         if iteration > (count / 50) + 1:
@@ -44,8 +43,24 @@ def getMovies(driver, count):
     with open("animation.txt", "w") as file:
         for link in movies:
             file.write(f"{movies[link]} : {link}\n")
-    pass
 
+
+
+def awards(driver : webdriver.Chrome, movies :dict):
+    """wait = WebDriverWait(driver, 10)
+    animation_companies = {}
+    for link in movies:
+        driver.get(link)
+        driver.implicitly_wait(10)
+        try:
+            awards_info = wait.until(EC.visibility_of_element_located((By.XPATH, f"//li[contains(@data-testid, 'award_information')]")))
+            awards_summary = awards_info.find_element(By.XPATH, f".//span").text
+            awards_lable = awards_info.find_element(By.XPATH, f".//a[contains(@aria-label, 'See more awards and nominations')]").text
+            print(awards_lable, awards_summary)
+            if ("Won" in awards_lable):
+                print(awards_lable, awards_summary, "*************")
+        except TimeoutError:
+            pass"""
 
 def main():
     start_time = time.time()
@@ -68,7 +83,7 @@ def main():
     except FileNotFoundError:
         getMovies(driver, count)
 
-    print(len(movies))
+    awards(driver, movies)
     print("--- %s seconds ---" % (time.time() - start_time))
 
     driver.quit()
