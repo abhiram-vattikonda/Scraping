@@ -40,7 +40,7 @@ def main():
     model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content("Here is the transcription of a youtube video, I need you to give me detailed summary of this paragraph:\n" + para)
 
-    with open("youtube-summary.txt", 'w') as file:
+    with open("youtube-summary.md", 'w') as file:
         file.writelines(response.text)
     print(response.text)
     print("--- %s seconds ---" % (time.time() - start_time))

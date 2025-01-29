@@ -1,7 +1,0 @@
-This video explains the "Learning With Errors" (LWE) problem as a basis for quantum-resistant cryptography.  Current public-key cryptography relies on problems easily solvable by quantum computers. LWE, however, is believed to be hard even for quantum computers.
-
-LWE starts with a system of linear equations where the solution (a secret vector) is hidden.  To make it harder to solve, "errors" (small random numbers) are added to the equations, creating an overdetermined system with no exact solution.  This makes it computationally expensive to find the original secret vector, even though approximating it is possible.
-
-The video demonstrates how to use LWE for encryption: Bob can send Alice a single bit (0 or 1) by adding a specific value (0 or half the modulus) to one of the error-filled equations. Alice, knowing the secret vector, can easily separate the added bit from the errors, while an eavesdropper cannot.  This single-bit encryption can be scaled to create a shared secret key.
-
-The connection between LWE and lattice problems is highlighted.  LWE can be represented as a lattice problem, where finding the nearest lattice point to an error-shifted point is computationally difficult.  This reinforces the belief that LWE is a hard problem suitable for cryptography, leading to algorithms like Kyber used in post-quantum cryptography standards.
