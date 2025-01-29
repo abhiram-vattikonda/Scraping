@@ -38,7 +38,7 @@ def main():
 
     genai.configure(api_key=os.getenv('api_key'))
     model = genai.GenerativeModel("gemini-1.5-flash")
-    response = model.generate_content("Here is the transcription part of a youtube video, I need you to give me the summary of this paragraph.\n" + para)
+    response = model.generate_content("Here is the transcription of a youtube video, I need you to give me detailed summary of this paragraph:\n" + para)
 
     with open("youtube-summary.txt", 'w') as file:
         file.writelines(response.text)
