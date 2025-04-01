@@ -1,33 +1,39 @@
-import csv, requests, re, time
+import csv, time, requests
+import asyncio, aiohttp
 from bs4 import BeautifulSoup as bs
 
 
 words_missed = []
 error_words = []
+url = "https://www.spanishdict.com/translate/{}?langFrom=es"
+limit = 10001
+start_at = 0
 
-
-def main():
+async def main():
     start_time = time.time()
-
     language = "Spanish"
-    
     not_words = ["", "\n"]
 
+
     with open('lute3-spanish-to-english-term-bank.csv', mode="a", newline='', encoding="utf-8") as csvfile:
-        count = count_csv_rows("lute3-spanish-to-english-term-bank.csv")
+        #count = count_csv_rows("lute3-spanish-to-english-term-bank.csv")
         fieldNames = ["language", "term", "translation", "parent", "status", "link_status", "tags", "pronunciation"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldNames)
 
-        if count == -1:
-            writer.writeheader()
-            count = 0
+        # if count == -1:
+        #     writer.writeheader()
+        #     count = 0
 
         with open("Diccionario.Espanol.136k.palabras.txt", mode="r", encoding="utf-16") as txtfile:
+            count = 0
             file_as_list = list(txtfile)
-            for word in file_as_list[count:]:
-                word = word.strip()
+            response_queue = asyncio.Queue()
+            fetch_task = asyncio.create_task(get_html(file_as_list[start_at:], response_queue))
+            count = 0
+            while count < limit:
+                word, html = await response_queue.get()
 
-                html = requests.get("https://www.spanishdict.com/translate/" + word + "?langFrom=es").text
+
                 soup = bs(html, 'html.parser')
 
                 if word in not_words:
@@ -37,7 +43,7 @@ def main():
                     translation, parents = getTranslation(soup)
                 except:
                     error_words.append(word)
-                    print("Error with a translation or parents")
+                    print(f"Error with a translation or parents with {word}")
                     break
 
                 if translation == "":
@@ -58,16 +64,48 @@ def main():
                 writer.writerow(row)
 
                 count += 1
-                if count % 500 == 0:
+                if count % 100 == 0:
                     print(count)
 
-                if count == 50:
-                    break
 
 
     print("--- %s seconds ---" % (time.time() - start_time))
     print(words_missed)
     print(error_words)
+
+
+
+
+
+
+# async def get_html(file : list):
+#     async with aiohttp.ClientSession() as session:
+#         tasks = [asyncio.create_task(session.get(url.format(word), ssl=False)) for word in file[:1001]]
+
+#         responses = await asyncio.gather(*tasks)
+        
+#         return [await response.text() for response in responses]
+
+async def get_html(words, response_queue):
+    async with aiohttp.ClientSession() as session:
+        tasks = []
+        for word in words[:limit]:  # Limit to 100 words
+            task = asyncio.create_task(fetch_translation(session, word, response_queue))
+            tasks.append(task)
+        
+        # Instead of waiting for all tasks, we process as they finish
+        for task in asyncio.as_completed(tasks):
+            await task  # Process the task as soon as it's done
+
+async def fetch_translation(session, word, response_queue):
+    try:
+        async with session.get(url.format(word), ssl=False) as response:
+            html = await response.text()
+            await response_queue.put((word, html))  # Store result in queue
+    except Exception as e:
+        print(f"Failed to fetch {word}: {e}")
+        await response_queue.put((word, None))  # Store None for failed requests
+
 
 
 def getTranslation(soup : bs):
@@ -135,7 +173,9 @@ def count_csv_rows(filename):
 
 if __name__ == "__main__":
     try:
-        main()
+        asyncio.run(main())
+        print(error_words)
+        print(words_missed)
     except KeyboardInterrupt:
         print(error_words)
         print(words_missed)
