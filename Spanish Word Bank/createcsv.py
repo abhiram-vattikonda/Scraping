@@ -1,6 +1,5 @@
 import csv, requests, re, time
 from bs4 import BeautifulSoup as bs
-import lxml
 
 
 words_missed = []
@@ -29,7 +28,7 @@ def main():
                 word = word.strip()
 
                 html = requests.get("https://www.spanishdict.com/translate/" + word + "?langFrom=es").text
-                soup = bs(html, 'lxml')
+                soup = bs(html, 'html.parser')
 
                 if word in not_words:
                     continue
