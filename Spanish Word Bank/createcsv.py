@@ -14,59 +14,60 @@ async def main():
     language = "Spanish"
     not_words = ["", "\n"]
 
+    try: 
+        with open('lute3-spanish-to-english-term-bank.csv', mode="a", newline='', encoding="utf-8") as csvfile:
+            #count = count_csv_rows("lute3-spanish-to-english-term-bank.csv")
+            fieldNames = ["language", "term", "translation", "parent", "status", "link_status", "tags", "pronunciation"]
+            writer = csv.DictWriter(csvfile, fieldnames=fieldNames)
 
-    with open('lute3-spanish-to-english-term-bank.csv', mode="a", newline='', encoding="utf-8") as csvfile:
-        #count = count_csv_rows("lute3-spanish-to-english-term-bank.csv")
-        fieldNames = ["language", "term", "translation", "parent", "status", "link_status", "tags", "pronunciation"]
-        writer = csv.DictWriter(csvfile, fieldnames=fieldNames)
+            # if count == -1:
+            #     writer.writeheader()
+            #     count = 0
 
-        # if count == -1:
-        #     writer.writeheader()
-        #     count = 0
-
-        with open("Diccionario.Espanol.136k.palabras.txt", mode="r", encoding="utf-16") as txtfile:
-            count = 0
-            file_as_list = list(txtfile)
-            response_queue = asyncio.Queue()
-            fetch_task = asyncio.create_task(get_html(file_as_list[start_at:], response_queue))
-            count = 0
-            while count < limit:
-                word, html = await response_queue.get()
+            with open("Diccionario.Espanol.136k.palabras.txt", mode="r", encoding="utf-16") as txtfile:
+                count = 0
+                file_as_list = list(txtfile)
+                response_queue = asyncio.Queue()
+                fetch_task = asyncio.create_task(get_html(file_as_list[start_at:], response_queue))
+                count = 0
+                while count < limit:
+                    word, html = await response_queue.get()
 
 
-                soup = bs(html, 'html.parser')
+                    soup = bs(html, 'html.parser')
 
-                if word in not_words:
-                    continue
+                    if word in not_words:
+                        continue
 
-                try:
-                    translation, parents = getTranslation(soup)
-                except:
-                    error_words.append(word)
-                    print(f"Error with a translation or parents with {word}")
-                    break
+                    try:
+                        translation, parents = getTranslation(soup)
+                    except:
+                        if html is None:
+                            error_words.append(word)
+                            continue
 
-                if translation == "":
-                    words_missed.append(word)
-                    continue
+                    if translation == "":
+                        words_missed.append(word)
+                        continue
 
-                row = {
-                    "language" : language,
-                    "term" : word,
-                    "translation" : translation,
-                    "parent" : parents,
-                    "status" : 1,
-                    "link_status" : "Y" if parents != "" else "",
-                    "tags" : "",
-                    "pronunciation" : ""
-                    }
-                
-                writer.writerow(row)
+                    row = {
+                        "language" : language,
+                        "term" : word,
+                        "translation" : translation,
+                        "parent" : parents,
+                        "status" : 1,
+                        "link_status" : "Y" if parents != "" else "",
+                        "tags" : "",
+                        "pronunciation" : ""
+                        }
+                    
+                    writer.writerow(row)
 
-                count += 1
-                if count % 100 == 0:
-                    print(count)
-
+                    count += 1
+                    if count % 100 == 0:
+                        print(count)
+    except TypeError as e:
+        print(e)
 
 
     print("--- %s seconds ---" % (time.time() - start_time))
@@ -77,14 +78,6 @@ async def main():
 
 
 
-
-# async def get_html(file : list):
-#     async with aiohttp.ClientSession() as session:
-#         tasks = [asyncio.create_task(session.get(url.format(word), ssl=False)) for word in file[:1001]]
-
-#         responses = await asyncio.gather(*tasks)
-        
-#         return [await response.text() for response in responses]
 
 async def get_html(words, response_queue):
     async with aiohttp.ClientSession() as session:
@@ -149,9 +142,10 @@ def getTranslationInYelloBox(soup : bs):
             else:
                 translation += (meaning_for_nonverbs[num].text).split('-')[1] + ", \n"
         except IndexError:
-            print("Error in translation")
+            #print("Error in translation")
+            pass
 
-    return translation[:-2]
+    return translation[:-3]
 
 
 def getParentsInYellowBox(soup : bs):
