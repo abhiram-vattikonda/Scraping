@@ -8,6 +8,8 @@ GOOGLE_SHEET_NAME = "Novel Chapter Tracker"  # name of your sheet
 HEADER = ["Novel Name", "Latest Chapter"]
 
 def main():
+    print("The code was run")
+    
     novel_list = {
         "cerim": 31891971, "Zogarth": 34232701, "DarkTechnomancer": 48003713, 
         "Shirtaloon": 22614979, "Ellake": 110014129, "Wizardly Dude": 151887001,
@@ -121,7 +123,7 @@ def send_email(subject, body):
         print(f"Failed to send email: {response.status_code}, {response.text}")
 
 def handler(request):
-    print("The code was run")
+    
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "application/json"},
