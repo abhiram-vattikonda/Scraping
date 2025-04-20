@@ -120,13 +120,11 @@ def send_email(subject, body):
         print(f"Failed to send email: {response.status_code}, {response.text}")
 
 def handler(request):
-    start_time = time.time()
     result = main()
-    print("--- %s seconds ---" % (time.time() - start_time))
-
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "application/json"},
         "body": result
     }
+
 
