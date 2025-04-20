@@ -121,6 +121,7 @@ def send_email(subject, body):
         print(f"Failed to send email: {response.status_code}, {response.text}")
 
 def handler(request):
+    print("The code was run")
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "application/json"},
