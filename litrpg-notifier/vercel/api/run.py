@@ -7,3 +7,7 @@ def handler(request):
         "headers": {"Content-Type": "application/json"},
         "body": json.dumps({"status": "ok"})
     }
+
+if __name__ == "__main__":
+    # Run test requests locally
+    print(handler({"some": "request"}))
