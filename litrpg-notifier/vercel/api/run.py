@@ -77,6 +77,7 @@ def get_sheet():
     except gspread.SpreadsheetNotFound:
 
         spreadsheet = client.create(GOOGLE_SHEET_NAME)  # Create a new sheet
+        spreadsheet.share(os.getenv("your_email"), perm_type='user', role='writer')
         sheet = spreadsheet.sheet1  # Get the first sheet
         print("new spread sheet was created")
         sheet.append_row(HEADER)  # You can pre-set the header row
