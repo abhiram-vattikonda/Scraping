@@ -1,16 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "api/run.py": {
-      "runtime": "python3.10"
-    }
-  },
-  "builds": [
-    {
-      "src": "api/run.py",
-      "use": "@vercel/python"
-    }
-  ],
   "routes": [
     {
       "src": "/api/(.*)",
