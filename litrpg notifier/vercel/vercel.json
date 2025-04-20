@@ -1,0 +1,11 @@
+{
+    "functions": {
+      "api/run.py": {
+        "runtime": "python3.10"
+      }
+    },
+    "routes": [
+      { "src": "/api/run", "dest": "api/run.py" }
+    ]
+  }
+  

@@ -1,0 +1,5 @@
+aiohttp
+requests
+python-dotenv
+gspread
+oauth2client

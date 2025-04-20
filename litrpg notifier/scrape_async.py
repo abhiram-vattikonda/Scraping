@@ -1,4 +1,4 @@
-import csv, asyncio, aiohttp, os, requests
+import csv, asyncio, aiohttp, os, requests, time
 from dotenv import load_dotenv
 import json
 
@@ -6,7 +6,7 @@ load_dotenv()
 
 header = ["Novel Name", "Latest Chapter"]
 
-async def handler(request):
+def main():
     novel_list = {
         "cerim": 31891971, "Zogarth": 34232701, "DarkTechnomancer": 48003713, 
         "Shirtaloon": 22614979, "Ellake": 110014129, "Wizardly Dude": 151887001,
@@ -29,7 +29,7 @@ async def handler(request):
         changed = True
         subject = "New list file is Created"
 
-    latest_chapters = await CreateAsyncTask(novel_list)
+    latest_chapters = asyncio.run(CreateAsyncTask(novel_list))
 
     updated_auths = []
     try:
@@ -98,3 +98,7 @@ def WriteToFile(latest_chapters):
         for auth in latest_chapters:
             writer.writerow({"Novel Name": auth, "Latest Chapter": latest_chapters[auth]})
 
+if __name__ == "__main__":
+    start_time = time.time()
+    main()
+    print("--- %s seconds ---" % (time.time() - start_time))
