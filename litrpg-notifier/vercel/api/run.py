@@ -119,8 +119,14 @@ def send_email(subject, body):
     else:
         print(f"Failed to send email: {response.status_code}, {response.text}")
 
-if __name__ == "__main__":
+def handler(request):
     start_time = time.time()
     result = main()
     print("--- %s seconds ---" % (time.time() - start_time))
+
+    return {
+        "statusCode": 200,
+        "headers": {"Content-Type": "application/json"},
+        "body": result
+    }
 
