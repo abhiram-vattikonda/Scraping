@@ -1,11 +1,17 @@
 import asyncio, aiohttp, os, requests, json, gspread
 from google.oauth2.service_account import Credentials
 from dotenv import load_dotenv
+from flask import Flask , request, jsonify
 
 load_dotenv()
 
 GOOGLE_SHEET_NAME = "Novel Chapter Tracker"
 HEADER = ["Novel Name", "Latest Chapter"]
+changed = False
+subject = ""
+body = ""
+
+app = Flask(__name__)
 
 def get_sheet():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"]
@@ -13,11 +19,21 @@ def get_sheet():
     creds = Credentials.from_service_account_info(service_account_info, scopes=scope)
     client = gspread.authorize(creds)
 
+
     try:
         sheet = client.open(GOOGLE_SHEET_NAME).sheet1
+        print("Old file opened")
+        print(sheet.show())
+        
     except gspread.SpreadsheetNotFound:
         spreadsheet = client.create(GOOGLE_SHEET_NAME)
-        spreadsheet.share(os.getenv("your_email"), perm_type='user', role='writer')
+        print("new file created")
+        spreadsheet.share(os.getenv("YOUR_EMAIL"), "user", "writer", True, "Your link", True)
+        print("shared new file")
+        subject = "New file was created"
+        global changed 
+        changed = True
+
         sheet = spreadsheet.sheet1
         sheet.append_row(HEADER)
     return sheet
@@ -58,7 +74,8 @@ async def fetch_chapter(session, author, pid, latest_chapters):
     except Exception as e:
         print(f"Error for {author}: {e}")
 
-def handler(request):
+def main():
+    print("main is run")
     novel_list = {
         "cerim": 31891971, "Zogarth": 34232701, "DarkTechnomancer": 48003713, 
         "Shirtaloon": 22614979, "Ellake": 110014129, "Wizardly Dude": 151887001,
@@ -66,23 +83,17 @@ def handler(request):
         "Honour Rae": 75697552, "Priam": 71991276, "Miles English": 95765665
     }
 
-    changed = False
-    subject = ""
-    body = ""
-
-    try:
-        current_latest = read_from_sheet()
-    except gspread.SpreadsheetNotFound:
-        current_latest = {}
-        changed = True
-        subject = "New file was created"
+    global changed
+    
+    current_latest = read_from_sheet()
 
     latest_chapters = asyncio.run(fetch_latest_chapters(novel_list))
+    print("latest is run")
 
-    updated_auths = [auth for auth in novel_list if current_latest.get(auth) != latest_chapters.get(auth)]
+    updated_auths = {auth : latest_chapters[auth] for auth in novel_list if current_latest.get(auth) != latest_chapters.get(auth)}
     if updated_auths:
         changed = True
-        subject = f"Updated authors: {updated_auths}"
+        subject = f"Updated authors: {updated_auths.keys()}"
         body = f"{updated_auths}"
 
     if changed:
@@ -94,3 +105,13 @@ def handler(request):
         "headers": {"Content-Type": "application/json"},
         "body": json.dumps({"status": "success", "updated": updated_auths})
     }
+
+
+@app.route('/' , methods=["GET"])
+def home():
+    result = main()
+    return jsonify(json.loads(result["body"])), result["statusCode"]
+
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5000)

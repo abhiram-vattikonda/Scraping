@@ -7,6 +7,7 @@ load_dotenv()
 header = ["Novel Name", "Latest Chapter"]
 
 def main():
+    print("main is run")
     novel_list = {
         "cerim": 31891971, "Zogarth": 34232701, "DarkTechnomancer": 48003713, 
         "Shirtaloon": 22614979, "Ellake": 110014129, "Wizardly Dude": 151887001,
@@ -30,7 +31,7 @@ def main():
         subject = "New list file is Created"
 
     latest_chapters = asyncio.run(CreateAsyncTask(novel_list))
-
+    print("Got latest chapter")
     updated_auths = []
     try:
         for auth in novel_list:

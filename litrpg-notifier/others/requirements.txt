@@ -1,3 +1,6 @@
+asyncio
 aiohttp
+os
 requests
-python-dotenv
+json
+gspread
