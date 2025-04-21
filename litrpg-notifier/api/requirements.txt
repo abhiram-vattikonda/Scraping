@@ -1,5 +1,6 @@
+Flask
 aiohttp
 requests
-json
 gspread
-google
+google-auth
+python-dotenv
