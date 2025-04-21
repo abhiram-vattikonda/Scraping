@@ -1,6 +1,6 @@
-asyncio
 aiohttp
 os
 requests
 json
 gspread
+google
