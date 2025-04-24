@@ -1,6 +1,0 @@
-Flask
-aiohttp
-requests
-gspread
-google-auth
-python-dotenv
