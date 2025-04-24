@@ -1,4 +1,4 @@
-import asyncio, aiohttp, os, requests, json, gspread
+import asyncio, aiohttp, os, requests, json, gspread, time
 from google.oauth2.service_account import Credentials
 from dotenv import load_dotenv
 from flask import Flask , request, jsonify
@@ -83,7 +83,7 @@ def main():
         "Honour Rae": 75697552, "Priam": 71991276, "Miles English": 95765665
     }
 
-    global changed
+    
     
     current_latest = read_from_sheet()
 
@@ -92,6 +92,7 @@ def main():
 
     updated_auths = {auth : latest_chapters[auth] for auth in novel_list if current_latest.get(auth) != latest_chapters.get(auth)}
     if updated_auths:
+        global changed
         changed = True
         subject = f"Updated authors: {updated_auths.keys()}"
         body = f"{updated_auths}"
@@ -109,7 +110,9 @@ def main():
 
 @app.route('/' , methods=["GET"])
 def home():
+    start_time = time.time()
     result = main()
+    print("--- %s seconds ---" % (time.time() - start_time))
     return jsonify(json.loads(result["body"])), result["statusCode"]
 
 
