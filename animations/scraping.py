@@ -82,7 +82,7 @@ def main():
     driver = webdriver.Chrome()
     driver.get("https://www.imdb.com/search/title/?title_type=feature&genres=animation&countries=US&languages=en")
     driver.implicitly_wait(10)
-    count =  int(driver.find_element(by=By.CSS_SELECTOR, value=".sc-13add9d7-3.fwjHEn").text.split()[2].replace(",", ""))
+    count =  int(driver.find_element(by=By.CSS_SELECTOR, value=".sc-285b550-3.cgeYTn").text.split()[2].replace(",", ""))
     
 
     movies = {}
